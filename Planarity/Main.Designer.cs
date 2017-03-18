@@ -1,6 +1,6 @@
 ﻿namespace Planarity
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         /// Требуется переменная конструктора.
@@ -47,7 +47,7 @@
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(474, 477);
+            this.pictureBox1.Size = new System.Drawing.Size(474, 474);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
@@ -84,7 +84,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(493, 237);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(303, 252);
+            this.dataGridView1.Size = new System.Drawing.Size(303, 249);
             this.dataGridView1.TabIndex = 3;
             // 
             // Column3
@@ -134,7 +134,7 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Вершины";
             // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -146,7 +146,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.pictureBox1);
-            this.Name = "Form1";
+            this.Name = "Main";
             this.Text = "Проверка графа на планарность";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

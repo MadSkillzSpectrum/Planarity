@@ -6,6 +6,7 @@ namespace Planarity
     /// <summary>
     /// Граф
     /// </summary>
+    // TODO: сделать статическим?
     public class Graph
     {
         ///<summary>Вершины графа</summary>
@@ -21,6 +22,14 @@ namespace Planarity
             return vert;
         }
 
+        /// <summary>
+        /// Удалить вершину
+        /// </summary>
+        /// <param name="vert">Удаляемая вершина</param>
+        public void RemoveVert(Vert vert)
+        {
+            _verts.Remove(vert);
+        }
         ///<summary>
         /// Получить вершины графа
         /// </summary>

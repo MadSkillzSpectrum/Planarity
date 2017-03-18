@@ -5,17 +5,33 @@ using System.Windows.Forms;
 
 namespace Planarity
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public Form1()
+        public Main()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Основной граф
+        /// </summary>
         private Graph _graph;
+        /// <summary>
+        /// Состояние построения ребра
+        /// </summary>
         private bool _edging;
+        /// <summary>
+        /// Откуда
+        /// </summary>
         private Vert _edgeFrom;
+        /// <summary>
+        /// Куда
+        /// </summary>
         private Point _edgeTo;
+        /// <summary>
+        /// Отступ
+        /// </summary>
+        private int _offset = Vert.R / 2;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -28,13 +44,13 @@ namespace Planarity
             var g = e.Graphics;
             if (_edging)
             {
-                g.DrawLine(Pens.Black, new Point(_edgeFrom.Position.X + Vert.R, _edgeFrom.Position.Y + Vert.R), _edgeTo);
+                g.DrawLine(Pens.Black, new Point(_edgeFrom.Position.X + _offset, _edgeFrom.Position.Y + _offset), _edgeTo);
             }
             foreach (var v in _graph.GetVerts())
             {
                 foreach (var v2 in v.LinkedVers)
                 {
-                    g.DrawLine(Pens.Black, new Point(v.Position.X + Vert.R, v.Position.Y + Vert.R), new Point(v2.Position.X + Vert.R, v2.Position.Y + Vert.R));
+                    g.DrawLine(Pens.Black, new Point(v.Position.X + _offset, v.Position.Y + _offset), new Point(v2.Position.X + _offset, v2.Position.Y + _offset));
                 }
             }
             foreach (var v in _graph.GetVerts())
@@ -60,12 +76,14 @@ namespace Planarity
         {
             Refresh();
             var need = true;
+  
+            var click = new Point(e.X - _offset, e.Y - _offset);
             if (e.Button == MouseButtons.Left)
             {
                 if (!_graph.GetVerts().Any())
                 {
-                    var v = _graph.AddVert(new Vert(new Point(e.X - Vert.R, e.Y - Vert.R)));
-                    dataGridView1.Rows.Add(dataGridView1.RowCount, (_graph.GetVerts().Last().Position.X - 200) / 2, (-_graph.GetVerts().Last().Position.Y + 200) / 2);
+                    var v = _graph.AddVert(new Vert(click));
+                    dataGridView1.Rows.Add(dataGridView1.RowCount, (v.Position.X - pictureBox1.Width/2) / 2, (-v.Position.Y + pictureBox1.Height / 2) / 2);
                     _edgeFrom = v;
                     _edging = true;
                 }
@@ -74,7 +92,7 @@ namespace Planarity
                     Vert connectTo = null;
                     foreach (var v in _graph.GetVerts())
                     {
-                        if (Math.Pow(v.Position.X - (e.X - Vert.R), 2) + Math.Pow(v.Position.Y - (e.Y - Vert.R), 2) <= Vert.R * Vert.R)
+                        if (Helper.InCircle(v.Position,click,Vert.R))
                         {
                             need = false;
                             connectTo = v;
@@ -82,8 +100,8 @@ namespace Planarity
                     }
                     if (need)
                     {
-                        connectTo = _graph.AddVert(new Vert(new Point(e.X - Vert.R, e.Y - Vert.R)));
-                        dataGridView1.Rows.Add(dataGridView1.RowCount, (_graph.GetVerts().Last().Position.X - 200) / 2, (-_graph.GetVerts().Last().Position.Y + 200) / 2);
+                        connectTo = _graph.AddVert(new Vert(click));
+                        dataGridView1.Rows.Add(dataGridView1.RowCount, (connectTo.Position.X - pictureBox1.Width / 2) / 2, (-connectTo.Position.Y + pictureBox1.Height / 2) / 2);
                         if (!_edging)
                         {
                             _edgeFrom = connectTo;
@@ -121,10 +139,10 @@ namespace Planarity
             {
                 foreach (var v in _graph.GetVerts())
                 {
-                    if (Math.Pow(v.Position.X - (e.X - Vert.R), 2) + Math.Pow(v.Position.Y - (e.Y - Vert.R), 2) <= Vert.R * Vert.R)
+                    if (Helper.InCircle(v.Position, click, Vert.R))
                     {
                         dataGridView1.Rows.RemoveAt(_graph.GetVerts().IndexOf(v));
-                        _graph.GetVerts().Remove(v);
+                        _graph.RemoveVert(v);
                         foreach (var ver in _graph.GetVerts().Where(ver => ver.LinkedVers.Contains(v)))
                         {
                             ver.LinkedVers.Remove(v);
